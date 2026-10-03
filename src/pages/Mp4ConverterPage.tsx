@@ -7,7 +7,6 @@ import { VideoSlider } from "../components/Slider";
 
 export function Mp4ConverterPage () {
     const [selectedMp4, setSelectedMp4] = useState<File | null>(null);
-    const [currentBlob, setCurrentBlob] = useState<Blob | null>(null);
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
     const [startTime, setStartTime] = useState<number>(0);
@@ -49,7 +48,6 @@ export function Mp4ConverterPage () {
 
         try {
             const gifBlob = await mp4ToGif(selectedMp4, startTime, duration)
-            setCurrentBlob(gifBlob)
             downloadBlob(gifBlob, `converted_${Date.now()}.gif`)
         } catch (err) {
             console.error(err)

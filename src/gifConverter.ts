@@ -37,7 +37,7 @@ export async function mp4ToGif (file: File, startTime: number, duration: number)
 
     const data = await ffmpeg.readFile('output.gif')
 
-    return new Blob([data], {
+    return new Blob([new Uint8Array(data as Uint8Array)], {
         type: 'image/gif'
     })
 }
