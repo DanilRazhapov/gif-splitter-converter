@@ -12,6 +12,7 @@ export function Mp4ConverterPage () {
     const [startTime, setStartTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(5);
     const [videoDuration, setVideoDuration] = useState<number>(30)
+    const [isOver, setIsOver] = useState<boolean>(false)
 
     const mp4InputRef = useRef<HTMLInputElement>(null)
     const videoRef = useRef<HTMLVideoElement>(null)
@@ -33,6 +34,14 @@ export function Mp4ConverterPage () {
 
     function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
         const mp4 = event.target.files?.[0]
+        if (mp4) {
+            setSelectedMp4(mp4)
+        }
+    }
+
+    function handleDrop(event: React.DragEvent<HTMLDivElement>) {
+        event.preventDefault()
+        const mp4 = event.dataTransfer.files?.[0]
         if (mp4) {
             setSelectedMp4(mp4)
         }
@@ -84,7 +93,22 @@ export function Mp4ConverterPage () {
 
     return (
         <div className="flex flex-col items-center gap-4 text-steam-text">
-            <div className="relative w-full max-w-3xl aspect-video border-steam-accent border-2 rounded-2xl bg-steam-panel">
+            <div 
+            className={`relative w-full max-w-3xl aspect-video border-2 rounded-2xl
+                ${isOver ? 'bg-steam-accent border-steam-panel' 
+                    : 'bg-steam-panel border-steam-accent'
+                }`}
+            onDragEnter={(e) => e.preventDefault()}
+                onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsOver(true);
+                }} 
+                onDragLeave={() => setIsOver(false)}
+                onDrop={(e) => {
+                    setIsOver(false);
+                    handleDrop(e);
+                }}
+            >
                 {selectedMp4 && (
                     <video
                         ref={videoRef}
