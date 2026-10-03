@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="mp4Input" type="file" style="display: none;">
+    <button id="mp4InputButton">Выбрать MP4 файл</button>
+    <button id="mp4ConverterButton">Конвертировать MP4 в GIF</button>
+    <button id="gifDownloadButton">Скачать GIF</button>
+    <script type="module" src="/src/gifConverter.ts"></script>
+
+    <img id="gifPreview" alt="Результат">
+
+    <input id="startTime" type="number" value="0">
+    <input id="duration" type="number" value="5">
+</body>
+</html>

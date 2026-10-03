@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+    --color-steam-bg: #171a21;
+    --color-steam-panel: #1b2838;
+    --color-steam-hover: #2a475e;
+    --color-steam-accent: #66c0f4;
+    --color-steam-text: #c7d5e0;
+    --color-steam-muted: #8f98a0;
+}
+
+body {
+    background-color: #171a21;
+    min-height: 100vh;
+}
+
+.SliderThumb {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: #2a475e;
+    box-shadow: 0 2px 10px var(--black-a7);
+    border-radius: 10px;
+}
+.SliderThumb:hover {
+	background-color: #66c0f4;
+}
+.SliderThumb:focus {
+	outline: none;
+	box-shadow: 0 0 0 5px var(--black-a8);
+}
