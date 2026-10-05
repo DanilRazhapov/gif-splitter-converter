@@ -8,25 +8,14 @@ let isLoaded: boolean = false
 async function ensureLoaded() {
     if (isLoaded) return;
 
-    const baseUrl =
-        'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.10/dist/esm';
-
+    const baseUrl = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.10/dist/esm';
+    
     await ffmpeg.load({
-        coreURL: await toBlobURL(
-            `${baseUrl}/ffmpeg-core.js`,
-            'text/javascript'
-        ),
-        wasmURL: await toBlobURL(
-            `${baseUrl}/ffmpeg-core.wasm`,
-            'application/wasm'
-        ),
-        workerURL: await toBlobURL(
-            `${baseUrl}/ffmpeg-core.worker.js`,
-            'text/javascript'
-        ),
-    });
-
-    isLoaded = true;
+            coreURL: await toBlobURL(`${baseUrl}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseUrl}/ffmpeg-core.wasm`, 'application/wasm'),
+            workerURL: await toBlobURL(`${baseUrl}/ffmpeg-core.worker.js`, 'text/javascript'),
+        });
+    isLoaded = true
 }
 
 export async function mp4ToGif (
@@ -36,20 +25,21 @@ export async function mp4ToGif (
     options: {
         fps?: number,
         width?: number,
-        dither?: 'none' | 'bayer' | 'floyd-steinberg' | 'sierra2_4a',
+        dither?: 'none' | 'bayer' | 'floyd_steinberg' | 'sierra2_4a',
         statsMode?: 'full' | 'diff' | 'single',
         maxColors?: number,
         diffMode?: 'none' | 'rectangle',
         bayerScale?: number,
         } = {}
     ): Promise<Blob> {
+
     await ensureLoaded()
 
     const {
         fps = 15,
         width = 720,
-        dither = 'floyd-steinberg',
-        statsMode = 'full',
+        dither = 'sierra2_4a',
+        statsMode = 'diff',
         maxColors = 256,
         diffMode = 'none',
         bayerScale = 2,
@@ -71,11 +61,16 @@ export async function mp4ToGif (
         '-ss', String(startTime),
         '-i', 'input.mp4', 
         '-t', String(duration),
+        '-threads', '2',
         '-vf', filter,
         '-loop', '0',
         'output.gif'])
 
     const data = await ffmpeg.readFile('output.gif')
+
+    if (typeof data === 'string') {
+    throw new Error('FFmpeg returned string instead of binary data');
+}
 
     return new Blob([new Uint8Array(data as Uint8Array)], { type: 'image/gif'})
 }
