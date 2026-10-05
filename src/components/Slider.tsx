@@ -55,6 +55,11 @@ export function VideoSlider({startTime, duration, videoDuration, maxDuration, vi
                 
                 video.currentTime = start
 
+                video.addEventListener('seeked', () => {
+                    video.muted = true
+                    video.play().catch((e) => console.error('play rejected', e))
+                }, { once: true })
+
                 if (stopHandlerRef.current) {
                     video.removeEventListener('timeupdate', stopHandlerRef.current)
                     stopHandlerRef.current = null;
@@ -71,7 +76,7 @@ export function VideoSlider({startTime, duration, videoDuration, maxDuration, vi
                 stopHandlerRef.current = stopHandler
                 video.addEventListener('timeupdate', stopHandler)
 
-                video.play().catch(() => {})
+                video.play().catch((e) => console.error('play rejected', e))
             }}
         >
 
@@ -79,8 +84,8 @@ export function VideoSlider({startTime, duration, videoDuration, maxDuration, vi
                 <Slider.Range className="absolute h-full rounded-full bg-steam-hover" />
             </Slider.Track>
 
-            <Slider.Thumb className="SliderThumb" aria-label="Start time" onPointerDown={() => videoRef?.current?.pause()}/>
-            <Slider.Thumb className="SliderThumb" aria-label="End time" onPointerDown={() => videoRef?.current?.pause()} />
+            <Slider.Thumb className="SliderThumb touch-none" aria-label="Start time" onPointerDown={() => videoRef?.current?.pause()}/>
+            <Slider.Thumb className="SliderThumb touch-none" aria-label="End time" onPointerDown={() => videoRef?.current?.pause()} />
 
         </Slider.Root>
     )

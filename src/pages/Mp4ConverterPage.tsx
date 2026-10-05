@@ -92,9 +92,9 @@ export function Mp4ConverterPage () {
     }
 
     return (
-        <div className="flex flex-col items-center gap-4 text-steam-text">
+        <div className="min-h-screen flex flex-col items-center gap-4 w-full max-w-3xl px-4 mx-auto text-steam-text">
             <div 
-            className={`relative w-full max-w-3xl aspect-video border-2 rounded-2xl
+            className={`relative w-full max-w-3xl aspect-video border-2 rounded-2xl flex 
                 ${isOver ? 'bg-steam-accent border-steam-panel' 
                     : 'bg-steam-panel border-steam-accent'
                 }`}
@@ -113,11 +113,14 @@ export function Mp4ConverterPage () {
                     <video
                         ref={videoRef}
                         src={videoUrl}
-                        className="w-full h-full rounded-2xl object-contain"
-                        onLoadedMetadata={(e) =>
-                            setVideoDuration(e.currentTarget.duration)
-                        }
-                        muted
+                        className="w-full h-full rounded-2xl object-contain "
+                        onLoadedMetadata={(e) => {
+                            const v = e.currentTarget
+                            v.muted = true
+                            v.setAttribute('muted', '')
+                            setVideoDuration(v.duration)
+                        }}
+                        playsInline
                     />
                 )}
 
@@ -142,7 +145,7 @@ export function Mp4ConverterPage () {
                 style={{display: "none"}}
                 accept=".mp4,video/mp4"
             />
-            <div className="flex gap-21">
+            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-3xl px-4 justify-center">
                 <Button
                 size="md"
                 onClick={handleChooseClick}

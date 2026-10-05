@@ -6,8 +6,13 @@ function App () {
     return (
         <BrowserRouter>
             <nav className="gap-4 p-4 flex flex-row justify-center items-center bg-steam-dark text-steam-text">
-                <Link to="/splitter" className="text-steam-text">Gif Splitter</Link>
-                <Link to="/converter" className="text-steam-text">Mp4 Converter</Link>
+                <div className="text-steam-text bg-steam-hover px-2 py-1 rounded-lg">
+                    <Link to="/splitter">Gif Splitter</Link>
+                </div>
+
+                <div className="text-steam-text bg-steam-hover px-2 py-1 rounded-lg">
+                    <Link to="/converter">Mp4 Converter</Link>
+                </div>
             </nav>
 
             <Routes>

@@ -84,7 +84,7 @@ export function GifSplitterPage() {
             </div>
 
             <div
-                className="flex gap-45 text-steam-text"
+                className="flex sm:flex-row gap-45 text-steam-text"
             >
                 <Button onClick={handleChooseClick}
                 size="lg"> 
