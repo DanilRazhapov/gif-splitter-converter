@@ -8,12 +8,11 @@ let isLoaded: boolean = false
 async function ensureLoaded() {
     if (isLoaded) return;
 
-    const baseUrl = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.10/dist/esm';
+    const baseUrl = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm';
     
     await ffmpeg.load({
             coreURL: await toBlobURL(`${baseUrl}/ffmpeg-core.js`, 'text/javascript'),
             wasmURL: await toBlobURL(`${baseUrl}/ffmpeg-core.wasm`, 'application/wasm'),
-            workerURL: await toBlobURL(`${baseUrl}/ffmpeg-core.worker.js`, 'text/javascript'),
         });
     isLoaded = true
 }
@@ -61,7 +60,6 @@ export async function mp4ToGif (
         '-ss', String(startTime),
         '-i', 'input.mp4', 
         '-t', String(duration),
-        '-threads', '2',
         '-vf', filter,
         '-loop', '0',
         'output.gif'])
