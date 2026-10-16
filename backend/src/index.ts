@@ -8,13 +8,18 @@ const app = Fastify({
     logger: true,
 });
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : [])
+]
+
 await app.register(cors, {
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
 });
 
 await app.register(multipart, {
     limits: {
-        fileSize: 100 * 1024 * 1024,
+        fileSize: 25 * 1024 * 1024,
         files: 1
     }
 });
@@ -30,8 +35,8 @@ app.get("/api/health", async () => {
 
 try {
     await app.listen({
-        port: 3000,
-        host: "127.0.0.1",
+        port: Number(process.env.PORT) || 3000,
+        host: "0.0.0.0",
     });
 } catch (error) {
     app.log.error(error);
