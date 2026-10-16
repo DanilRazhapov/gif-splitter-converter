@@ -16,7 +16,7 @@ export function Mp4ConverterPage () {
     const mp4InputRef = useRef<HTMLInputElement>(null)
     const videoRef = useRef<HTMLVideoElement>(null)
 
-    const [options, setOptions] = useState({
+    const options = {
         fps: 20,
         width: 720,
         dither: 'bayer' as const,
@@ -24,7 +24,7 @@ export function Mp4ConverterPage () {
         maxColors: 256,
         diffMode: "rectangle" as const,
         bayerScale: 3,
-    })
+    }
 
     const videoUrl = useMemo(
         () => (selectedMp4 ? URL.createObjectURL(selectedMp4) : undefined),
