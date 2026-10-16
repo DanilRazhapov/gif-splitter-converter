@@ -5,7 +5,7 @@ export async function handleSplitGif(file: File) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${API_URL}/api/split`, {
     method: "POST",
     body: formData,
   });
