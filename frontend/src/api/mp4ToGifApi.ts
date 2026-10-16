@@ -1,3 +1,5 @@
+import { API_URL } from "./config";
+
 type ConvertOptions = {
     fps?: number;
     width?: number;
@@ -7,8 +9,6 @@ type ConvertOptions = {
     diffMode?: "none" | "rectangle";
     bayerScale?: number;
 };
-
-const API_URL = "http://127.0.0.1:3000";
 
 async function requestConversion(
     endpoint: "/api/convert" | "/api/convert-and-split",

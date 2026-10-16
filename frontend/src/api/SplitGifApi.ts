@@ -1,10 +1,11 @@
 import downloadBlob from "../components/download";
+import { API_URL } from "./config";
 
 export async function handleSplitGif(file: File) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetch("http://127.0.0.1:3000/api/split", {
+  const response = await fetch(API_URL, {
     method: "POST",
     body: formData,
   });
