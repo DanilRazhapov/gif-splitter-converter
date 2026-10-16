@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo, useEffect } from "react"
-import { splitGif } from "../gifSplitter"
 import { Button } from "../components/Button"
+import { handleSplitGif } from "../api/SplitGifApi"
 
 export function GifSplitterPage() {   
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -46,7 +46,7 @@ export function GifSplitterPage() {
         setIsProcessing(true)
 
         try {
-            await splitGif(selectedFile)
+            await handleSplitGif(selectedFile);
         } catch(err) {
             console.error(err)
         } finally {

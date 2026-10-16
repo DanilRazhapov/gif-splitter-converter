@@ -1,9 +1,8 @@
 import { useState, useRef, useMemo, useEffect } from "react"
-import { mp4ToGif } from "../gifConverter";
-import { splitGif } from "../gifSplitter";
 import downloadBlob from "../components/download";
 import { Button } from "../components/Button";
 import { VideoSlider } from "../components/Slider";
+import { convertAndDownload, convertAndSplit } from "../api/mp4ToGifApi";
 
 export function Mp4ConverterPage () {
     const [selectedMp4, setSelectedMp4] = useState<File | null>(null);
@@ -16,6 +15,16 @@ export function Mp4ConverterPage () {
 
     const mp4InputRef = useRef<HTMLInputElement>(null)
     const videoRef = useRef<HTMLVideoElement>(null)
+
+    const [options, setOptions] = useState({
+        fps: 20,
+        width: 720,
+        dither: 'bayer' as const,
+        statsMode: "diff" as const,
+        maxColors: 256,
+        diffMode: "rectangle" as const,
+        bayerScale: 3,
+    })
 
     const videoUrl = useMemo(
         () => (selectedMp4 ? URL.createObjectURL(selectedMp4) : undefined),
@@ -48,16 +57,18 @@ export function Mp4ConverterPage () {
     }
 
     async function handleConvertClick() {
-        if(!selectedMp4) {
-            alert('Пожалуйста выберите mp4 файл')
-            return
-        }
+        if(!selectedMp4) return
 
         setIsProcessing(true)
 
         try {
-            const gifBlob = await mp4ToGif(selectedMp4, startTime, duration)
-            downloadBlob(gifBlob, `converted_${Date.now()}.gif`)
+            const gifBlob = await convertAndDownload(
+                selectedMp4,
+                startTime,
+                duration,
+                options
+            )
+            downloadBlob(gifBlob, `converted.gif`)
         } catch (err) {
             console.error(err)
         } finally {
@@ -81,9 +92,13 @@ export function Mp4ConverterPage () {
 
         setIsProcessing(true)
         try {
-            const gifBlob = await mp4ToGif(selectedMp4, startTime, duration)
-            const gifFile = new File([gifBlob], 'converted.gif', { type: 'image/gif'})
-            await splitGif(gifFile)
+            const gifBlob = await convertAndSplit(
+                selectedMp4,
+                startTime,
+                duration,
+                options
+            )
+            downloadBlob(gifBlob, `gif-parts.zip`)
         } catch (err) {
             console.error(err)
         } finally {
